@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/drawble"
+    android:background="@drawable/background13"
     android:padding="10dp">
 
     <ImageView
@@ -36,7 +36,7 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="8dp"
-        android:textColor="#F83F4D9E"
+        android:textColor="@color/textcolorwhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,7 @@
         android:inputType="textPersonName"
 
         android:padding="8dp"
-        android:textColor="#F83F4D9E"
+        android:textColor="@color/textcolorwhite"
         app:layout_constraintBottom_toTopOf="@+id/editText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,15 +78,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:background="#08C0E2"
         android:padding="8dp"
         android:text="Login"
-        android:textColor="#0A0931"
+        android:textColor="@color/textcolorwhite"
         android:textCursorDrawable="@drawable/tetraicon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        android:background="@drawable/edittextroundedcorners"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -99,7 +99,7 @@
         android:layout_marginRight="8dp"
         android:text="SignUp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#0A0931"
+        android:textColor="@color/textcolorwhite"
         app:fontFamily="casual"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -116,10 +116,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="TETRA"
-        android:textColor="#0A0931"
+        android:text="Tetra"
+        android:textColor="@color/textcolorwhite"
         android:textSize="36sp"
-        app:fontFamily="casual"
+        app:fontFamily="Montserrat"
         app:layout_constraintBottom_toTopOf="@+id/editText2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

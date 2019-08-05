@@ -4,8 +4,8 @@
 
     <stroke
         android:drawable="@android:color/transparent"
-        android:width="1dp"
-        android:color="#CC888888" >
+        android:width="2dp"
+        android:color="#08C0E2" >
     </stroke>
 
     <solid android:color="#FFFFFF" />
