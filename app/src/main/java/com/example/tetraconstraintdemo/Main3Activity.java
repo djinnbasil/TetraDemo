@@ -1,6 +1,8 @@
 package com.example.tetraconstraintdemo;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
 
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -31,16 +36,27 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Main3Activity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    PlaceAutocompleteFragment placeAutoComplete;
+
     TextView txtView ;
     EditText locationstart;
     EditText locationend1;
+    List<LatLng> path = new ArrayList();
+
 
     int AUTOCOMPLETE_REQUEST_CODE = 1;
     private static final String TAG = "MainActivity";
@@ -63,13 +79,16 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
         PlacesClient placesClient = Places.createClient(this);
 
 
+
         locationstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG);
 // Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(Main3Activity.this);
                 startActivityForResult(intent, 2);
+
+
 
 
 
@@ -129,6 +148,17 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                //Execute Directions API request
+
+
+
+            }
+        });
+
     }
 
 
@@ -139,9 +169,18 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 if (requestCode==2){
                     locationstart.setText(place.getName());
+                    LatLng latlng = place.getLatLng();
+                    txtView.setText(latlng.toString());
+                    latlng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                   mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
                 }
                 if (requestCode==3){
                     locationend1.setText(place.getName());
+                    LatLng latlng = place.getLatLng();
+                    txtView.setText(latlng.toString());
+                    latlng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
+
                 }
 
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
@@ -161,5 +200,19 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
 if(googleMap!=null && location!=null && !location.equals("")){
     new GeocoderTask().execute(location);
 }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

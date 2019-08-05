@@ -31,6 +31,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-places:16.0.0'
     implementation 'com.google.android.libraries.places:places:1.1.0'
+    implementation 'com.google.android.gms:play-services-places:11.2.0'
+    implementation 'org.slf4j:slf4j-nop:1.7.25'
 
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
