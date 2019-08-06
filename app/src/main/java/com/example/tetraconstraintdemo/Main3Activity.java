@@ -2,6 +2,10 @@ package com.example.tetraconstraintdemo;
 
 import android.content.Intent;
 
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,12 +68,14 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
 
     TextView txtView ;
-    EditText locationstart;
-    EditText locationend1;
+    TextView locationstart;
+    TextView locationend1;
     List<LatLng> path = new ArrayList();
     Button routr;
     List<Place> placess = new ArrayList<>();
     RequestQueue queue;
+
+    private BottomSheetBehavior bottomSheet;
 
     int AUTOCOMPLETE_REQUEST_CODE = 1;
     private static final String TAG = "MainActivity";
@@ -81,8 +87,8 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
         txtView = findViewById(R.id.test);
-        locationstart = findViewById(R.id.locationstart);
-        locationend1 = findViewById(R.id.locationend);
+        locationstart = findViewById(R.id.test1);
+        locationend1 = findViewById(R.id.test2);
         routr = findViewById(R.id.router);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -90,6 +96,56 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
         final RequestQueue queue = Volley.newRequestQueue(this);
 
         // Places.initialize(getApplicationContext(), apiKey);
+
+
+
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.main_content);
+// The View with the BottomSheetBehavior
+       // View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
+
+        View nestedScrollView = (View) findViewById(R.id.bottom_sheet);
+        bottomSheet = BottomSheetBehavior.from(nestedScrollView);
+        final BottomSheetBehavior behavior = bottomSheet;
+        bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                // React to state change
+                Log.e("onStateChanged", "onStateChanged:" + newState);
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_DRAGGING: {
+                        break;
+                    }
+                    case BottomSheetBehavior.STATE_SETTLING: {
+                        break;
+                    }
+                    case BottomSheetBehavior.STATE_EXPANDED: {
+                        break;
+                    }
+                    case BottomSheetBehavior.STATE_COLLAPSED: {
+                        break;
+                    }
+                    case BottomSheetBehavior.STATE_HIDDEN: {
+                        break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // React to dragging events
+
+            }
+        });
+
+        behavior.setPeekHeight(500);
+
+
+
+
+
+
 
 
         Places.initialize(getApplicationContext(), "AIzaSyDYWB9hpF_-53-IYlfSVHsM1rXAkVa35aY");
@@ -117,7 +173,7 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
                                     JSONObject obj1 = jsonObject2.getJSONObject("distance");
                                     JSONObject obj2 = jsonObject2.getJSONObject("duration");
                                     txtView.setText("Response is: "+ obj1.toString() + "\n"+obj2.toString());
-                                    ;
+                                    placess.clear();
                                 }catch (JSONException err){
                                     Log.d("Error", err.toString());
                                 }
