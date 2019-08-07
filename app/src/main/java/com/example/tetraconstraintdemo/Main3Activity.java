@@ -2,6 +2,7 @@ package com.example.tetraconstraintdemo;
 
 import android.content.Intent;
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -55,6 +57,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -70,15 +73,23 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
     TextView txtView ;
     TextView locationstart;
     TextView locationend1;
+    TextView locationend2;
     List<LatLng> path = new ArrayList();
     Button routr;
+    Button invent;
     List<Place> placess = new ArrayList<>();
+    List<Float> floats = new ArrayList<>();
+
+
+    List<String> distexts = new ArrayList<>();
     RequestQueue queue;
 
     private BottomSheetBehavior bottomSheet;
 
     int AUTOCOMPLETE_REQUEST_CODE = 1;
     private static final String TAG = "MainActivity";
+    String url = "";
+    String url11 = "";
 
 
 
@@ -89,7 +100,9 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
         txtView = findViewById(R.id.test);
         locationstart = findViewById(R.id.test1);
         locationend1 = findViewById(R.id.test2);
+        locationend2 = findViewById(R.id.test3);
         routr = findViewById(R.id.router);
+        invent = findViewById(R.id.inventory);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -157,7 +170,11 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
 
-                String url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+placess.get(0).getAddress()+"&destinations="+placess.get(1).getAddress()+"&key=AIzaSyDYWB9hpF_-53-IYlfSVHsM1rXAkVa35aY";
+
+
+                url11 = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+locationend1.getText()+"&destinations="+locationend2.getText()+"&key=AIzaSyDYWB9hpF_-53-IYlfSVHsM1rXAkVa35aY";
+
+                url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+locationstart.getText()+"&destinations="+locationend1.getText()+"&key=AIzaSyDYWB9hpF_-53-IYlfSVHsM1rXAkVa35aY";
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                             @Override
@@ -172,7 +189,12 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
                                     JSONObject jsonObject2 = new JSONObject(array2.get(0).toString());
                                     JSONObject obj1 = jsonObject2.getJSONObject("distance");
                                     JSONObject obj2 = jsonObject2.getJSONObject("duration");
-                                    txtView.setText("Response is: "+ obj1.toString() + "\n"+obj2.toString());
+
+                                    distexts.add(obj1.get("text").toString());
+                                    distexts.add(obj2.get("text").toString());
+
+                                    txtView.setText("Travel From "+locationstart.getText()+" for "+obj1.get("text")+" takes around " + obj2.get("text")+"and reach "+locationend1.getText()+"\n");
+
                                     placess.clear();
                                 }catch (JSONException err){
                                     Log.d("Error", err.toString());
@@ -182,9 +204,66 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         txtView.setText("That didn't work!");
+
+                        //routecalculator();
+                    }
+                });
+
+                StringRequest stringRequest1 = new StringRequest(Request.Method.GET, url11,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Display the first 500 characters of the response string.
+
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    JSONArray array1 = jsonObject.getJSONArray("rows");
+                                    JSONObject jsonObject1 = new JSONObject(array1.get(0).toString());
+                                    JSONArray array2 = jsonObject1.getJSONArray("elements");
+                                    JSONObject jsonObject2 = new JSONObject(array2.get(0).toString());
+                                    JSONObject obj1 = jsonObject2.getJSONObject("distance");
+                                    JSONObject obj2 = jsonObject2.getJSONObject("duration");
+                                    String distancetext = obj1.get("text").toString().replace(" mi","");
+                                    String durationtext = obj2.get("text").toString().replace(" mins","");
+
+                                    distexts.add(obj1.get("text").toString());
+                                    distexts.add(obj2.get("text").toString());
+
+                                   txtView.append("Travel From "+locationend1.getText()+" for "+obj1.get("text")+" takes around " + obj2.get("text")+"and reach "+locationend2.getText());
+                                    placess.clear();
+                                }catch (JSONException err){
+                                    Log.d("Error", err.toString());
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        txtView.setText("That didn't work!");
+
+                        //routecalculator();
                     }
                 });
   queue.add(stringRequest);
+  queue.add(stringRequest1);
+
+            }
+        });
+
+
+
+        invent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+//Add your data from getFactualResults method to bundle
+                bundle.putString("Route", txtView.getText().toString());
+                bundle.putString("Location1", locationstart.getText().toString());
+                bundle.putString("Location2", locationend1.getText().toString());
+                bundle.putString("Location3", locationend2.getText().toString());
+
+                Intent intent = new Intent(Main3Activity.this,Main4Activity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
         locationstart.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +299,18 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
         }
     });
 
+        locationend2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG,Place.Field.ADDRESS);
+// Start the autocomplete intent.
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(Main3Activity.this);
+                startActivityForResult(intent, 4);
+
+            }
+        });
+
 
 
 
@@ -231,6 +322,12 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
         LatLng sydney = new LatLng(-34, 151);
+
+
+        MapStyleOptions style = new MapStyleOptions(getString(R.string.mapstyle));
+        mMap.setMapStyle(style);
+
+
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
@@ -264,8 +361,7 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
                 if (requestCode==2){
                     locationstart.setText(place.getAddress());
                     LatLng latlng = place.getLatLng();
-                    txtView.setText(latlng.toString());
-                    latlng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+
                     path.add(latlng);
                     placess.add(place);
                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
@@ -273,8 +369,16 @@ public class Main3Activity extends FragmentActivity implements OnMapReadyCallbac
                 if (requestCode==3){
                     locationend1.setText(place.getAddress());
                     LatLng latlng = place.getLatLng();
-                    txtView.setText(latlng.toString());
-                    latlng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+
+                    path.add(latlng);
+                    placess.add(place);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
+
+                }
+                if (requestCode==4){
+                    locationend2.setText(place.getAddress());
+                    LatLng latlng = place.getLatLng();
+
                     path.add(latlng);
                     placess.add(place);
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);

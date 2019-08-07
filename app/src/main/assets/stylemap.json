@@ -1,9 +1,4 @@
-<resources>
-    <string name="app_name">TetraConstraintDemo</string>
-    <string name="title_activity_route_mapper">RouteMapper</string>
-    <string name="title_activity_rmap">rmap</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="mapstyle">[
+[
   {
     "elementType": "geometry",
     "stylers": [
@@ -235,5 +230,4 @@
       }
     ]
   }
-]</string>
-</resources>
+]
