@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "54900632712",
+    "firebase_url": "https://tetraconstraintdemo.firebaseio.com",
+    "project_id": "tetraconstraintdemo",
+    "storage_bucket": "tetraconstraintdemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54900632712:android:eaa13d250aff2001",
+        "android_client_info": {
+          "package_name": "com.example.tetraconstraintdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54900632712-64rpv3f6bjnn7dhekv8qn4bvvgk7alb9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV_CxsR_b17RMW71EdqJwaaDU-FoIiDaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54900632712-64rpv3f6bjnn7dhekv8qn4bvvgk7alb9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

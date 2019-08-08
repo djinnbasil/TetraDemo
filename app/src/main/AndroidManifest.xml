@@ -36,16 +36,18 @@
 
 
 
-        <activity android:name=".Main4Activity" />
-        <activity android:name=".Main3Activity" />
-        <activity android:name=".MainActivity"
-            >
+        <activity android:name=".screens.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".screens.MapsViewActivity" />
+        <activity android:name=".screens.InventorySavingActivity" />
+        <activity android:name=".screens.SplashActivity" />
+
 
         <meta-data
             android:name="preloaded_fonts"

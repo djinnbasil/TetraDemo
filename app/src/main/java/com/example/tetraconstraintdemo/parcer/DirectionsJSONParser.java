@@ -1,4 +1,4 @@
-package com.example.tetraconstraintdemo;
+package com.example.tetraconstraintdemo.parcer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

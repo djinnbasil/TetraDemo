@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background13"
+    tools:context=".screens.LoginActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:id="@+id/userName"
+            android:text="babithbaby@gmail.com"
+            android:hint="Email id"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:id="@+id/password"
+            android:text="123456"
+            android:inputType="textPassword"
+            android:layout_marginTop="20dp"
+            android:hint="Password"
+            android:layout_height="wrap_content" />
+
+
+
+        <Button
+            android:id="@+id/loginUser"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:text="Login"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Sign Up"
+            android:id="@+id/signUpUser"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_height="48dp" />
+
+
+
+    </LinearLayout>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/signInViaGoogle"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>
