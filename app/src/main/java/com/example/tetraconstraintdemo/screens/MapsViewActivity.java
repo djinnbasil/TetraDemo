@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tetraconstraintdemo.R;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -38,6 +40,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -130,6 +133,9 @@ public class MapsViewActivity extends AppCompatActivity implements OnMapReadyCal
         routr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                mMap.addPolyline(new PolylineOptions().addAll(path));
 
 
                 url11 = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + locationend1.getText() + "&destinations=" + locationend2.getText() + "&key=AIzaSyDYWB9hpF_-53-IYlfSVHsM1rXAkVa35aY";
@@ -269,15 +275,10 @@ public class MapsViewActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
-        LatLng sydney = new LatLng(-34, 151);
 
 
         MapStyleOptions style = new MapStyleOptions(getString(R.string.mapstyle));
         mMap.setMapStyle(style);
-
-
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -311,6 +312,10 @@ public class MapsViewActivity extends AppCompatActivity implements OnMapReadyCal
                 path.add(latlng);
                 placess.add(place);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
+
+
+                mMap.addMarker(new MarkerOptions().position(latlng).title(place.getAddress()));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
             }
             if (requestCode == 3) {
                 locationend1.setText(place.getAddress());
@@ -319,6 +324,10 @@ public class MapsViewActivity extends AppCompatActivity implements OnMapReadyCal
                 path.add(latlng);
                 placess.add(place);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
+
+
+                mMap.addMarker(new MarkerOptions().position(latlng).title(place.getAddress()));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
 
             }
             if (requestCode == 4) {
@@ -329,25 +338,19 @@ public class MapsViewActivity extends AppCompatActivity implements OnMapReadyCal
                 placess.add(place);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
 
+                mMap.addMarker(new MarkerOptions().position(latlng).title(place.getAddress()));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+
             }
 
             Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
         } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             // TODO: Handle the error.
             Status status = Autocomplete.getStatusFromIntent(data);
-            Log.i(TAG, status.getStatusMessage());
+//            Log.i(TAG, status.getStatusMessage());
         } else if (resultCode == RESULT_CANCELED) {
             // The user canceled the operation.
         }
 
     }
-
-
-/*Also add googleMap != null contition in your click listener.
-
-if(googleMap!=null && location!=null && !location.equals("")){
-    new GeocoderTask().execute(location);
-}*/
-
-
 }
