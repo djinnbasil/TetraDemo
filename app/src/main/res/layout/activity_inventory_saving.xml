@@ -20,8 +20,7 @@
             >
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                app:srcCompat="@drawable/paperplane"/>
+                android:layout_height="50dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -125,8 +124,7 @@
             android:id="@+id/imageView"
             android:layout_width="242dp"
             android:layout_height="192dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/paperplane" />
+            android:layout_gravity="center" />
 </LinearLayout>
     </LinearLayout>
 
