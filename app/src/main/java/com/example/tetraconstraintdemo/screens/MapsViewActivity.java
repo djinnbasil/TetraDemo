@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
@@ -82,15 +83,63 @@ public class MapsViewActivity extends AppCompatActivity implements OnMapReadyCal
 
 
         Places.initialize(getApplicationContext(), "AIzaSyDYWB9hpF_-53-IYlfSVHsM1rXAkVa35aY");
+// Create a new Places client instance
+        PlacesClient placesClient = Places.createClient(this);
+
+
+
+
+        locationstart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
+// Start the autocomplete intent.
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(MapsViewActivity.this);
+                startActivityForResult(intent, 2);
+
+
+            }
+
+
+        });
+
+        locationend1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
+// Start the autocomplete intent.
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(MapsViewActivity.this);
+                startActivityForResult(intent, 3);
+
+            }
+        });
+
+        locationend2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
+// Start the autocomplete intent.
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(MapsViewActivity.this);
+                startActivityForResult(intent, 4);
+
+            }
+        });
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
+        LatLng sydney = new LatLng(-34, 151);
 
 
         MapStyleOptions style = new MapStyleOptions(getString(R.string.mapstyle));
         mMap.setMapStyle(style);
+
+
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -124,10 +173,6 @@ public class MapsViewActivity extends AppCompatActivity implements OnMapReadyCal
                 path.add(latlng);
                 placess.add(place);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
-
-
-                mMap.addMarker(new MarkerOptions().position(latlng).title(place.getAddress()));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
             }
             if (requestCode == 3) {
                 locationend1.setText(place.getAddress());
@@ -136,10 +181,6 @@ public class MapsViewActivity extends AppCompatActivity implements OnMapReadyCal
                 path.add(latlng);
                 placess.add(place);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
-
-
-                mMap.addMarker(new MarkerOptions().position(latlng).title(place.getAddress()));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
 
             }
             if (requestCode == 4) {
@@ -150,16 +191,13 @@ public class MapsViewActivity extends AppCompatActivity implements OnMapReadyCal
                 placess.add(place);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15), 2000, null);
 
-                mMap.addMarker(new MarkerOptions().position(latlng).title(place.getAddress()));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-
             }
 
             Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
         } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             // TODO: Handle the error.
             Status status = Autocomplete.getStatusFromIntent(data);
-//            Log.i(TAG, status.getStatusMessage());
+            Log.i(TAG, status.getStatusMessage());
         } else if (resultCode == RESULT_CANCELED) {
             // The user canceled the operation.
         }
